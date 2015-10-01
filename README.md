@@ -5,3 +5,6 @@ If you like this, feel free to check out [my site](http://colindrake.me)!
 
 ## Troubleshooting
 If the Markdown is not rendering, click **Editor** and then **Show Rendered Markdown**.
+
+## Caveats
+**Note:** Please keep in mind that this is a simple, naïve, implementation without any considerations for performance, etc.
