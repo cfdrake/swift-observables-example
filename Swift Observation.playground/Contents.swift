@@ -87,6 +87,12 @@ func <<<T>(observable: Observable<T>, value: T) {
     observable.value = value
 }
 
+/*:
+**Update:** It appears I've been (fairly!) called out here by none other than [Chris Lattner](http://nondot.org/sabre/) (the designer of the Swift language) himself for overriding and repurposing the bit shift operator. 😉 I can't say I disagree: [Tweet Link](https://twitter.com/clattner_llvm/status/650354422430588928).
+
+As such, if you use this code I'd recommend defining the `<~` operator instead, or something else similarly unique!
+*/
+
 /*: ## Example */
 class ExampleStruct {
     var v: Int
