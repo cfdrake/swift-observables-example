@@ -1,5 +1,5 @@
 # Swift Observables Example
-This is my blog article [An Observable Pattern Implementation in Swift](http://colindrake.me/2015/10/01/an-observable-pattern-implementation-in-swift/) implemented as a literate program in a Swift playground.
+This is my blog article [An Observable Pattern Implementation in Swift](https://colindrake.me/post/an-observable-pattern-implementation-in-swift/) implemented as a literate program in a Swift playground.
 
 If you like this, feel free to check out [my site](http://colindrake.me)!
 
