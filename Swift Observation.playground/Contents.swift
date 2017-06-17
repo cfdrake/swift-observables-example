@@ -16,9 +16,9 @@ Given that I've been working on this app to both scratch an itch and to use Swif
 To begin with, I wanted to come up with a `protocol` that I could implement to satisfy my data binding woes. I decided on a `subscribe`/`unsubscribe` type model, passing in an owner/observer as the object to update a subscription off of.
 */
 protocol ObservableProtocol {
-    typealias T
+    associatedtype T
     var value: T { get set }
-    func subscribe(observer: AnyObject, block: (newValue: T, oldValue: T) -> ())
+    func subscribe(observer: AnyObject, block: @escaping (_ newValue: T, _ oldValue: T) -> ())
     func unsubscribe(observer: AnyObject)
 }
 
@@ -32,7 +32,7 @@ We'll start out by defining a variable and a couple of handy types.
 
 Our model of subscribers is `observers`, a variable array of `ObserversEntry` entries. Each  entry is a tuple composed of a listening object and the block it expects to run upon the `Observable` firing. By passing in this listening object and associating it with the block to execute, we can easily look for it in the `unsubscribe` method to remove it.
 */
-    typealias ObserverBlock = (newValue: T, oldValue: T) -> ()
+    typealias ObserverBlock = (_ newValue: T, _ oldValue: T) -> ()
     typealias ObserversEntry = (observer: AnyObject, block: ObserverBlock)
     private var observers: Array<ObserversEntry>
     
@@ -51,7 +51,7 @@ At this point, when we construct an `Observable` we'll have an initial value. Th
         didSet {
             observers.forEach { (entry: ObserversEntry) in
                 let (_, block) = entry
-                block(newValue: value, oldValue: oldValue)
+                block(value, oldValue)
             }
         }
     }
@@ -59,11 +59,11 @@ At this point, when we construct an `Observable` we'll have an initial value. Th
 /*:
 Last but not least, the mechanism to notify observers is in place, but we have no way to update the `observers` array. We'll implement `subscribe` and `unsubscribe` to package up and add/remove observer tuples into the internal array.
 */
-    func subscribe(observer: AnyObject, block: ObserverBlock) {
+    func subscribe(observer: AnyObject, block: @escaping ObserverBlock) {
         let entry: ObserversEntry = (observer: observer, block: block)
         observers.append(entry)
     }
-    
+
     func unsubscribe(observer: AnyObject) {
         let filtered = observers.filter { entry in
             let (owner, _) = entry
@@ -105,7 +105,7 @@ class ExampleStruct {
     }
     
     func demo() {
-        obs.subscribe(self) { (newValue, oldValue) in
+        obs.subscribe(observer: self) { (newValue, oldValue) in
             self.v = newValue
         }
         
